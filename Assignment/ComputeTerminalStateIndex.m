@@ -19,5 +19,7 @@ function stateIndex = ComputeTerminalStateIndex(stateSpace, map)
 %           stateSpace matrix
 
 global DROP_OFF
-                  
+% looking for the coordinates of drop off
+[m, n] = find(map == DROP_OFF);
+stateIndex = find(stateSpace(:,1)==m & stateSpace(:,2)==n &stateSpace(:,3) == 1);
 end
