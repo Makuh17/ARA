@@ -2,7 +2,7 @@ function stateIndex = ComputeTerminalStateIndex(stateSpace, map)
 %ComputeTerminalStateIndex Compute the index of the terminal state in the
 %stateSpace matrix
 %
-%   stateIndex = ComputeTerminalStateIndex(stateSpace, map) 
+%   stateIndex = ComputeTerminalStateIndex(stateSpace, map)
 %   Computes the index of the terminal state in the stateSpace matrix
 %   Input arguments:
 %       stateSpace:
@@ -22,5 +22,5 @@ global DROP_OFF
 [m, n] = find(map == DROP_OFF);
 stateIndex = find(stateSpace(:,1) == m & stateSpace(:,2) == n...
     & stateSpace(:,3) == 1);
-                  
+
 end
