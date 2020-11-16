@@ -20,7 +20,9 @@ function stateIndex = ComputeTerminalStateIndex(stateSpace, map)
 
 global DROP_OFF
 [m, n] = find(map == DROP_OFF);
-stateIndex = find(stateSpace(:,1) == m & stateSpace(:,2) == n...
-    & stateSpace(:,3) == 1);
+
+stateIndex = find(stateSpace(:,1) == m & stateSpace(:,2) == n & stateSpace(:,3) == 1);
+   
+                  
 
 end
