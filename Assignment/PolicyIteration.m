@@ -37,4 +37,35 @@ global TERMINAL_STATE_INDEX
 % IMPORTANT: You can use the global variable TERMINAL_STATE_INDEX computed
 % in the ComputeTerminalStateIndex.m file (see main.m)
 
+% Initialization: Always Hover
+u_opt_ind = HOVER*ones(K, 1);
+
+iter = 0;
+while 1
+    % Stage 1: Policy Evaluation
+    q = G(sub2ind(size(G), (1:K)', u_opt_ind(:)));
+    
+    p = zeros(K, K);
+    for i = 1:K % go over rows
+        p(i,:) = P(i,:,u_opt_ind(i));
+        if i == TERMINAL_STATE_INDEX
+            p(i,:) = zeros(1, K);
+        end
+    end
+    
+    J_opt = (eye(K, K) - p)\q;
+    % Stage 2: Policy Improvements
+    u_opt_before = u_opt_ind;
+    for i = 1:K % for every row in u_opt_ind
+        costs = G(i,:)' + squeeze(P(i,:,:))'*J_opt; % 1 by 5 vector
+        [val, u_opt_ind(i)] = min(costs);
+    end
+    
+    % Terminate if poliicy didn't change
+    if u_opt_before == u_opt_ind
+        disp('Finished in ' + string(iter) + ' iterations.')
+        break;
+    end
+    iter = iter + 1;
 end
+
