@@ -3,3 +3,4 @@
 
 # OSX / *nix default autosave extension
 *.m~
+debug.log
