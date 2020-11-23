@@ -34,13 +34,12 @@ u_opt_ind = 5*ones(K,1);
 
 while max(J_diff) > 10^(-5)
     J_old = J_opt;
-    for i = 1:K
-        %VALUE UPDATE
-        J_opt(i) = G(i,u_opt_ind(i))+ P(i,:,u_opt_ind(i))*J_opt;
-        
-        %POLICY IMPROVEMENT
-        [~,u_opt_ind(i)]= min(G(i,:)+ reshape(pagemtimes(P(i,:,:),J_opt),[1,5]));
-    end
+    %VALUE UPDATE
+    [repeat_onenumber, repeat_numbers] = meshgrid(1:K);
+    u_mesh= meshgrid(u_opt_ind,1:K);
+    J_opt = G(sub2ind(size(G), (1:K)', u_opt_ind(:)))+ reshape(P(sub2ind(size(P), repeat_onenumber(:),repeat_numbers(:), u_mesh(:))), [K,K]).'*J_opt; 
+    %POLICY IMPROVEMENT
+    [~,u_opt_ind(:)]= min(G + reshape(pagemtimes(P(:,:,:),J_opt),[K,5]), [],2);
     %Calculate difference for threshhold
     J_diff = abs(J_opt - J_old);
 end
