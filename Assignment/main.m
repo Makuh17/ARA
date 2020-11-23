@@ -20,10 +20,10 @@ clc;
 
 %% Options
 % [M, N]
-mapSize = [15, 20];
+mapSize = [50, 60];
 % Set to true to generate a random map of size mapSize, else set to false 
 % to load the pre-exsisting example map
-generateRandomWorld = false;
+generateRandomWorld = true;
 
 % Plotting options
 global PLOT_POLICY PLOT_COST
@@ -33,8 +33,8 @@ PLOT_COST = false;
 %% Global problem parameters
 % IMPORTANT: Do not add or remove any global parameter in main.m
 global GAMMA R Nc P_WIND
-GAMMA  = 0.2; % Shooter gamma factor
-R = 2; % Shooter range
+GAMMA  = 0.6; % Shooter gamma factor
+R = 4; % Shooter range
 Nc = 10; % Time steps required to bring drone to base when it crashes
 P_WIND = 0.1; % Gust of wind probability
 
@@ -86,11 +86,11 @@ global K
 K=size(stateSpace,1);
 
 %% Set the following to true as you progress with the files
-transitionProbabilitiesImplemented = false;
-stageCostsImplemented = false;
+transitionProbabilitiesImplemented = true;
+stageCostsImplemented = true;
 valueIterationImplemented = false; 
 policyIterationImplemented = false;
-linearProgrammingImplemented = false;
+linearProgrammingImplemented = true;
 
 %% Compute the terminal state index
 global TERMINAL_STATE_INDEX

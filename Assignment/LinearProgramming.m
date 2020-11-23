@@ -33,10 +33,32 @@ global K HOVER
 %% Handle terminal state
 % Do yo need to do something with the teminal state before starting policy
 % iteration ?
+% the x vector is simply the J(i)s. the f is going to be -1*ones(length(J))
+% for the constraint we have to stack all the different pages for the
+% inputs.
+% the inequality constraint directly follows from the 
 global TERMINAL_STATE_INDEX
 % IMPORTANT: You can use the global variable TERMINAL_STATE_INDEX computed
 % in the ComputeTerminalStateIndex.m file (see main.m)
+%%
+f = -1*ones(K,1);
 
+P_rs = [P(:,:,1);P(:,:,2);P(:,:,3);P(:,:,4);P(:,:,5)];
+G_rs = [G(:,1);G(:,2);G(:,3);G(:,4);G(:,5)];
+G_rs(G_rs==Inf) = 10e12;
 
+P_aug = [eye(K);eye(K);eye(K);eye(K);eye(K)]-P_rs;
+
+b_eq = 0;
+A_eq = zeros(K,1); A_eq(TERMINAL_STATE_INDEX) = 1;
+
+J = linprog(f, P_aug, G_rs, A_eq', b_eq);
+u_all = zeros(length(J),5);
+for l = 1:5
+    u_all(:,l) = G(:,l)+P(:,:,l)*J;
+end 
+J_opt = J;
+[~,u_opt_ind] = min(u_all,[],2);
+u_opt_ind(TERMINAL_STATE_INDEX) = HOVER;
 end
 
