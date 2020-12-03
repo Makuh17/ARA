@@ -20,10 +20,10 @@ clc;
 
 %% Options
 % [M, N]
-mapSize = [50, 60];
+mapSize = [15, 20];
 % Set to true to generate a random map of size mapSize, else set to false 
 % to load the pre-exsisting example map
-generateRandomWorld = true;
+generateRandomWorld = false;
 
 % Plotting options
 global PLOT_POLICY PLOT_COST
@@ -33,8 +33,8 @@ PLOT_COST = false;
 %% Global problem parameters
 % IMPORTANT: Do not add or remove any global parameter in main.m
 global GAMMA R Nc P_WIND
-GAMMA  = 0.6; % Shooter gamma factor
-R = 4; % Shooter range
+GAMMA  = 0.2; % Shooter gamma factor
+R = 2; % Shooter range
 Nc = 10; % Time steps required to bring drone to base when it crashes
 P_WIND = 0.1; % Gust of wind probability
 
@@ -88,8 +88,8 @@ K=size(stateSpace,1);
 %% Set the following to true as you progress with the files
 transitionProbabilitiesImplemented = true;
 stageCostsImplemented = true;
-valueIterationImplemented = false; 
-policyIterationImplemented = false;
+valueIterationImplemented = true; 
+policyIterationImplemented = true;
 linearProgrammingImplemented = true;
 
 %% Compute the terminal state index
@@ -130,8 +130,9 @@ if valueIterationImplemented
     disp('Solve stochastic shortest path problem with Value Iteration');
     
     % TODO: Question d)
+    tic
     [ J_opt_vi, u_opt_ind_vi ] = ValueIteration(P, G);
-    
+    toc
     if size(J_opt_vi,1)~=K || size(u_opt_ind_vi,1)~=K
         disp('[ERROR] the size of J and u must be K')
     end
@@ -150,8 +151,9 @@ if linearProgrammingImplemented
     disp('Solve stochastic shortest path problem with Linear Programming');
     
     % TODO: Question d)
+    tic
     [ J_opt_lp, u_opt_ind_lp ] = LinearProgramming(P, G);
-    
+    toc
     if size(J_opt_lp,1)~=K || size(u_opt_ind_lp,1)~=K
         disp('[ERROR] the size of J and u must be K')
     end
